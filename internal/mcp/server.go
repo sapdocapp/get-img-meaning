@@ -47,7 +47,7 @@ func New() *mcp.Server {
 	server.AddTool(&mcp.Tool{
 		Name:        "health",
 		Description: "Report GPU availability, free VRAM, and whether the vision model is loaded.",
-		InputSchema: schema(map[string]any{}, nil),
+		InputSchema: schema(map[string]any{}, []string{}),
 	}, s.health)
 
 	return server
@@ -159,6 +159,9 @@ func errResult(format string, args ...any) *mcp.CallToolResult {
 
 // schema builds a JSON Schema object for a tool's input.
 func schema(props map[string]any, required []string) map[string]any {
+	if required == nil {
+		required = []string{}
+	}
 	return map[string]any{
 		"type":       "object",
 		"properties": props,
